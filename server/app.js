@@ -5,8 +5,7 @@ const session = require('express-session');
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const endpoints = require('./routes/endpoints');
-//app.use('/', indexRouter);
-//app.use('/', passport);
+
 app.use(bodyParser.json());
 app.use(cors());
 app.use(session({
