@@ -41,7 +41,7 @@ test('Verification codes are unique', async () => {
     } catch (error) {
       console.log(error);
       throw new Error ("Error occurred. Failing.");
-    }
+    } 
 });
 
 
