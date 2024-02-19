@@ -1,46 +1,48 @@
-const request = require('supertest');
-const express = require('express');
-const endpoints = require('../routes/endpoints.js');
-const app = express();
 const testEndpoints = require('./serverAPIcalls');
 
 test('Database clears', async () => {
-  try {
-    const response = await testEndpoints.GETclearDatabase();
-    expect(response.status).toBe(200);
-  } catch (error) {
-    console.error('Error in test:', error.message);
-  }
+    try{
+      const response = await testEndpoints.GETclearDatabase();
+      expect(response.acknowledged).toBe(true);
+    } catch (error) {
+      console.log(error);
+      throw new Error ("Error occurred. Failing.");
+    }
 });
 
 test('Verification code is generated', async () => {
-  try {
-    const response = await testEndpoints.GETclearDatabase();
-    expect(response.status).toBe(200);
-  } catch (error) {
-    console.error('Error in test:', error.message);
-  }
+    try {
+      const response = await testEndpoints.GETverificationCode();
+      expect(response).not.toBe(null);
+    } catch (error) {
+      console.log(error);
+      throw new Error ("Error occurred. Failing.");
+    }
 });
 
 test('Verification code is a string of six digits', async () => {
-  try {
-    const response = await testEndpoints.GETclearDatabase();
-    expect(response.body).toMatch(/^\d{6}$/); 
+  try{
+    const response = await testEndpoints.GETverificationCode();
+    expect(response).toMatch(/^\d{6}$/); 
   } catch (error) {
-    console.error('Error in test:', error.message);
+    console.log(error);
+    throw new Error ("Error occurred. Failing.");
   }
+});
+
+test('Verification codes are unique', async () => {
+    try{
+      const response1 = await testEndpoints.GETverificationCode();
+      const response2 = await testEndpoints.GETverificationCode();
+      const response3 = await testEndpoints.GETverificationCode();
+      expect(response1).not.toBe(response2);
+      expect(response2).not.toBe(response3);
+      expect(response1).not.toBe(response3);
+    } catch (error) {
+      console.log(error);
+      throw new Error ("Error occurred. Failing.");
+    }
 });
 
 
 
-
-// // Your testing suite
-// describe('Endpoint tests', () => {
-//   test('GET /clearDatabase', async () => {
-//     const response = await request(endpoints).get('/api/v1/clearUserDatabase');
-//     expect(response.status).toBe(200);
-//     expect(response.body.acknowledged).toBe("true");
-//   });
-
-//   // More tests go here
-// });
