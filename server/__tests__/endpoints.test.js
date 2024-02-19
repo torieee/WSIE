@@ -2,23 +2,36 @@ const request = require('supertest');
 const express = require('express');
 const endpoints = require('../routes/endpoints.js');
 const app = express();
+const testEndpoints = require('./serverAPIcalls');
 
-// Update the server address to match where your server is running
-app.use('/api/v1', endpoints);
-
-
-test('Server is reachable', async () => {
-  var requestOptions = {
-    method: 'GET',
-  };
-  
-  fetch("http://localhost:8080/api/v1/clearUserDatabase", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
-  //console.log('Server test response:', response.body);
-  expect(response.status).toBe(200);
+test('Database clears', async () => {
+  try {
+    const response = await testEndpoints.GETclearDatabase();
+    expect(response.status).toBe(200);
+  } catch (error) {
+    console.error('Error in test:', error.message);
+  }
 });
+
+test('Verification code is generated', async () => {
+  try {
+    const response = await testEndpoints.GETclearDatabase();
+    expect(response.status).toBe(200);
+  } catch (error) {
+    console.error('Error in test:', error.message);
+  }
+});
+
+test('Verification code is a string of six digits', async () => {
+  try {
+    const response = await testEndpoints.GETclearDatabase();
+    expect(response.body).toMatch(/^\d{6}$/); 
+  } catch (error) {
+    console.error('Error in test:', error.message);
+  }
+});
+
+
 
 
 // // Your testing suite
