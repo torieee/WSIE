@@ -8,6 +8,7 @@ const endpoints = express.Router();
 const json = require("body-parser/lib/types/json");
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
+const User = require("../src/models/userModel.js");
 
 //Endpoint Setup
 endpoints.use(bodyParser.json()); //express app uses the body parser
@@ -89,7 +90,43 @@ endpoints.put("/users/changePassword", async (req, res) => {
   }
 });
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//_______________________________ Testing endpoints_________________________________________
+endpoints.post("/users/testNewUser", async (req, res) => {
+  try {
+    const user = new User({
+      fullName: "Test User",
+      userName: "test",
+      password: "Testtest1", 
+      email: "thisisafakeemail@fakedomain.com",
+      verified: true,
+      verificationCode: 123456,
+      diet: [],
+      health: [],
+      favorites: []
+    });
 
+    res.json(user);
+  } 
+  catch (error) {
+    console.error('Error occurred during user registration:', error);
+    res.status(500).json({ error: 'An error occurred during user registration' });
+  }
+});
+
+
+
+//I NEED THIS TO TEST THE ENDPOINT TESTS BUT TAKE OUT LATER
+endpoints.get('/users', async (req, res) => { //WORKS!
+  try{
+    const users = await mongoose.model('User').find();
+    res.json(users);
+  }
+  catch(error){
+    console.error('Error fetching users: ', error);
+    res.status(500).json({ error: 'users - Internal Server Error' });
+  }
+});
 
 //____________________________________________MIDDLEWARE____________________________________________________________
 //Everything after this point requires authentication_______________________________________________________________
