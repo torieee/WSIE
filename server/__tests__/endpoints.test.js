@@ -44,5 +44,11 @@ test('Verification codes are unique', async () => {
     } 
 });
 
+test('User info requested for unregistered email gives user not found error', async () => {
+  const fakeEmail = 'thisemailisfake@fakedomain.com';
+  await expect(testEndpoints.GETrequestInfoForPasswordReset(fakeEmail))
+        .resolves.toEqual(expect.objectContaining({ error: 'User not found' }));
+});
+
 
 
