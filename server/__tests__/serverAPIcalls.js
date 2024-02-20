@@ -24,8 +24,15 @@ async function PUTchangePassword(email, username, password) {
         email: email,
         userName: username, 
         password: password
-    }
+    };
     var response = await PUT(url, body);
+    return response;
+}
+
+async function POSTtestNewUser() {
+    const url = `/api/v1/users/testNewUser`;
+    var body = {};
+    var response = await POST(url, body);
     return response;
 }
 
@@ -63,10 +70,27 @@ async function PUT(url, body){
     }
 }
 
+async function POST(url, body){
+    try {
+        const response = await fetch(`${host}${url}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+        const JSONresponse = await response.json();
+        return JSONresponse;
+    } catch(error) {
+        console.error('PUT Fetch error:', error.message);
+    }
+}
+
 
 module.exports = {
   GETclearDatabase,
   GETverificationCode,
   GETrequestInfoForPasswordReset,
   PUTchangePassword,
+  POSTtestNewUser,
 };
