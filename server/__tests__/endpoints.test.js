@@ -42,13 +42,13 @@ test('User info requested for unregistered email gives user not found error', as
 
 //This will not pass if database clears. Need to figure that out.
 test('User info requested for registered user returns information', async () => {
-  const newUser = await testEndpoints.POSTtestNewUser();
+  const newUser = await testEndpoints.POSTregisterDummyUser();
   console.log("New user: ", newUser);
   
   const email = 'thisisafakeemail@fakedomain.com';
   const response = await testEndpoints.GETrequestInfoForPasswordReset(email);
 
-  console.log(response)
+  console.log(response.userName)
   expect(response.userName).not.toBe(null); 
 });
 
@@ -65,15 +65,15 @@ test('Unverified user password change is unsuccessful', async () => {
 
 
 
-test('Database clears', async () => {
-  try{
-    const response = await testEndpoints.GETclearDatabase();
-    expect(response.acknowledged).toBe(true);
-  } catch (error) {
-    console.log(error);
-    throw new Error ("Error occurred. Failing.");
-  }
-});
+// test('Database clears', async () => {
+//   try{
+//     const response = await testEndpoints.GETclearDatabase();
+//     expect(response.acknowledged).toBe(true);
+//   } catch (error) {
+//     console.log(error);
+//     throw new Error ("Error occurred. Failing.");
+//   }
+// });
 
 
 

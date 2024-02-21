@@ -36,6 +36,19 @@ async function POSTtestNewUser() {
     return response;
 }
 
+async function POSTregisterDummyUser() {
+    const url = `/api/v1/users/register`;
+    var body = {
+        fullName: "Test User",
+        userName: "test",
+        password: "Testtest1", 
+        email: "thisisafakeemail@fakedomain.com",
+        
+    };
+    var response = await POST(url, body);
+    return response;
+}
+
 
 async function GET(url) {
     let JSONresponse;
@@ -93,4 +106,5 @@ module.exports = {
   GETrequestInfoForPasswordReset,
   PUTchangePassword,
   POSTtestNewUser,
+  POSTregisterDummyUser
 };
