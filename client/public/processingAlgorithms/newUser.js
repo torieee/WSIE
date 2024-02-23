@@ -30,7 +30,7 @@ var loginHandler = (() => {
       const verificationCode = await loginHandler2.getVerificationCode();
 
       
-      loginHandler2.sendEmail(fullName, email, verificationCode, emailjs, "newuser", username);
+      //loginHandler2.sendEmail(fullName, email, verificationCode, emailjs, "newuser", username);
 
 
       //After email verification, continue with registration

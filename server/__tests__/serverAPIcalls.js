@@ -36,16 +36,16 @@ async function POSTtestNewUser() {
     return response;
 }
 
-async function POSTregisterDummyUser() {
+async function POSTregisterDummyUser(req) {
     const url = `/api/v1/users/register`;
-    var body = {
-        fullName: "Test User",
-        userName: "test",
-        password: "Testtest1", 
-        email: "thisisafakeemail@fakedomain.com",
+    // var body = {
+    //     fullName: "Test User",
+    //     userName: "test",
+    //     password: "Testtest1", 
+    //     email: "thisisafakeemail@fakedomain.com",
         
-    };
-    var response = await POST(url, body);
+    // };
+    var response = await POST(url, req);
     return response;
 }
 
