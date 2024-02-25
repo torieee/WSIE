@@ -38,17 +38,21 @@ async function POSTtestNewUser() {
 
 async function POSTregisterDummyUser(req) {
     const url = `/api/v1/users/register`;
-    // var body = {
-    //     fullName: "Test User",
-    //     userName: "test",
-    //     password: "Testtest1", 
-    //     email: "thisisafakeemail@fakedomain.com",
-        
-    // };
     var response = await POST(url, req);
     return response;
 }
 
+async function PUTverifyUser(req) {
+    const url = `/users/verify`;
+    var response = await PUT(url, req);
+    return response;
+}
+
+async function POSTfindUsername(req) {
+    const url = `/users/find-username`;
+    var response = await POST(url, req);
+    return response;
+}
 
 async function GET(url) {
     let JSONresponse;
@@ -106,5 +110,7 @@ module.exports = {
   GETrequestInfoForPasswordReset,
   PUTchangePassword,
   POSTtestNewUser,
-  POSTregisterDummyUser
+  POSTregisterDummyUser,
+  POSTfindUsername,
+  PUTverifyUser,
 };

@@ -145,19 +145,11 @@ endpoints.use(session({
 //~~~~~ POST a new user - WORKS!
 endpoints.post("/users/register", async (req, res) => {
   try {
-    
-    console.log("1: ", req.body.password);
-
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log("2");
     const existingUsernameCheck = await User.findOne({ userName: req.body.userName });
-    console.log("3");
     const existingEmailCheck = await User.findOne({ email: req.body.email });
-    console.log("4");
     const hashedVerificationCode = await bcrypt.hash(req.body.verificationCode, 10);
-    console.log("5");
     const currentTimestamp = new Date();
-    console.log("6");
 
     const user = new User({
       id: req.body.id,
@@ -181,8 +173,6 @@ endpoints.post("/users/register", async (req, res) => {
         recipeUri: req.body.recipeUri
       }]
     });
-
-    console.log("USER: ", user);
 
     if(existingUsernameCheck){
       res.status(444).json({error: 'User already exists'});
@@ -266,8 +256,7 @@ endpoints.post('/users/find-username', async (req, res) => {
     } else if(user.verified == false){
       return res.status(450).json({error: 'User account is not verified'});
     }
-    
-
+  
     try {
       if((user.incorrectPasswordAttempts == 5) && (!hasTenMinutesPassed(user.incorrectPasswordAttemptTime))){
         return res.status(452).json({ error: '10 minute lockout' });
