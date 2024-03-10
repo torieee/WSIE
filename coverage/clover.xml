@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1710092555518" clover="3.2.0">
-  <project timestamp="1710092555518" name="All files">
+<coverage generated="1710092830408" clover="3.2.0">
+  <project timestamp="1710092830408" name="All files">
     <metrics statements="522" coveredstatements="497" conditionals="209" coveredconditionals="177" methods="77" coveredmethods="73" elements="808" coveredelements="747" complexity="0" loc="522" ncloc="522" packages="1" files="6" classes="6"/>
     <file name="currentUser.js" path="/Users/nick/Documents/capstone/WSIE/client/public/processingAlgorithms/currentUser.js">
       <metrics statements="29" coveredstatements="29" conditionals="10" coveredconditionals="8" methods="7" coveredmethods="7"/>
