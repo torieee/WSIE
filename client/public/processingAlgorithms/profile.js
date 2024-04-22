@@ -29,56 +29,110 @@ var restrictionsHandler = (() => {
         console.log('allergies: ', healthRestrictions);
     }
 
-    //Puts user restrictions into an array and gives the array to edamam.js
-    function handleDietButtons(buttonType, array, healthOrDietArray) {
-        buttonType.forEach(function (button) {
-            const sanitizedRestriction = getEdamamNameOfRestriction(button.textContent);
-            const userPreviouslySelected = healthOrDietArray.includes(sanitizedRestriction);
-    
-            if (userPreviouslySelected) {
-                button.classList.add('selected');
-                array.push(sanitizedRestriction);
-            }
-    
-            button.addEventListener('click', function () {
-                button.classList.toggle('selected');
-                if (button.classList.contains('selected')) {
-                    array.push(sanitizedRestriction);
-                    console.log('added ', sanitizedRestriction, ' to array');
-                    console.log('state of this array: ', array);
-                } else {
-                    const indexRestrictions = array.indexOf(sanitizedRestriction);
-                    if (indexRestrictions !== -1) {
-                        array.splice(indexRestrictions, 1);
-                        console.log('removed ', sanitizedRestriction, ' from array');
-                        console.log('state of this array: ', array);
-                    }
-                }
-                try {
-                    console.log("inside submitRestrictions(): ");
-                    const username = getUserNameFromCookie();
-                    console.log("username: ", username);
-                    getUserId(username)
-                        .then(userId => {
-                            console.log("userId: ", userId);
-                            console.log("diet restrictions: ", dietRestrictions);
-                            console.log("health restrictions: ", healthRestrictions);
+    // //Puts user restrictions into an array and gives the array to edamam.js
+    // function handleDietButtons(buttonType, array, healthOrDietArray) {
+    //     buttonType.forEach(function (button) {
+    //         const sanitizedRestriction = getEdamamNameOfRestriction(button.textContent);
+    //         const userPreviouslySelected = healthOrDietArray.includes(sanitizedRestriction);
+    //
+    //         if (userPreviouslySelected) {
+    //             button.classList.add('selected');
+    //             array.push(sanitizedRestriction);
+    //         }
+    //
+    //         button.addEventListener('click', function () {
+    //             button.classList.toggle('selected');
+    //             if (button.classList.contains('selected')) {
+    //                 array.push(sanitizedRestriction);
+    //                 console.log('added ', sanitizedRestriction, ' to array');
+    //                 console.log('state of this array: ', array);
+    //             } else {
+    //                 const indexRestrictions = array.indexOf(sanitizedRestriction);
+    //                 if (indexRestrictions !== -1) {
+    //                     array.splice(indexRestrictions, 1);
+    //                     console.log('removed ', sanitizedRestriction, ' from array');
+    //                     console.log('state of this array: ', array);
+    //                 }
+    //             }
+    //             try {
+    //                 console.log("inside submitRestrictions(): ");
+    //                 const username = getUserNameFromCookie();
+    //                 console.log("username: ", username);
+    //                 getUserId(username)
+    //                     .then(userId => {
+    //                         console.log("userId: ", userId);
+    //                         console.log("diet restrictions: ", dietRestrictions);
+    //                         console.log("health restrictions: ", healthRestrictions);
+    //
+    //                         if (userId) {
+    //                             PUTintoDatabase(username);
+    //                         }
+    //                     })
+    //                     .catch(error => {
+    //                         console.error('Error getting user ID:', error);
+    //                     });
+    //             }
+    //             catch (error) {
+    //                 console.error('Error while submitting restrictions:', error);
+    //             }
+    //             return array;
+    //         });
+    //     });
+    //     return array;
+    // }
 
-                            if (userId) {
-                                PUTintoDatabase(username);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error getting user ID:', error);
-                        });
-                }
-                catch (error) {
-                    console.error('Error while submitting restrictions:', error);
-                }
-                return array;
-            });
+    function handleDietButtons(buttonType, array, healthOrDietArray) {
+        buttonType.forEach(button => {
+            initializeButtonState(button, healthOrDietArray, array);
+            setupButtonListener(button, array);
         });
-        return array;
+    }
+
+    function initializeButtonState(button, healthOrDietArray, array) {
+        const restriction = getEdamamNameOfRestriction(button.textContent);
+        const isSelected = healthOrDietArray.includes(restriction);
+        if (isSelected) {
+            button.classList.add('selected');
+            if (!array.includes(restriction)) {
+                array.push(restriction);
+            }
+        }
+    }
+
+    function setupButtonListener(button, array) {
+        button.addEventListener('click', () => toggleButtonState(button, array));
+    }
+
+    function toggleButtonState(button, array) {
+        const restriction = getEdamamNameOfRestriction(button.textContent);
+        button.classList.toggle('selected');
+        updateRestrictionsArray(button, restriction, array);
+        submitUpdatedRestrictions();
+    }
+
+    function updateRestrictionsArray(button, restriction, array) {
+        const isSelected = button.classList.contains('selected');
+        const index = array.indexOf(restriction);
+
+        if (isSelected && index === -1) {
+            array.push(restriction);
+            console.log('Added', restriction, 'to array');
+        } else if (!isSelected && index !== -1) {
+            array.splice(index, 1);
+            console.log('Removed', restriction, 'from array');
+        }
+    }
+
+    async function submitUpdatedRestrictions() {
+        const username = getUserNameFromCookie();
+        try {
+            const userId = await getUserId(username);
+            if (userId) {
+                await PUTintoDatabase(username);
+            }
+        } catch (error) {
+            console.error('Error while submitting restrictions:', error);
+        }
     }
 
     
