@@ -1,4 +1,4 @@
-const host = 'localhost'
+const host = '34.16.148.238'
 
 let DB_URI = "mongodb://" + host + ":27017/WSIE";
 
