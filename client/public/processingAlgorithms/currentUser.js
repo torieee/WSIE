@@ -1,4 +1,4 @@
-const host = 'http://34.16.148.238/';
+const host = '';
 
 async function getUserId(username){
   try {
