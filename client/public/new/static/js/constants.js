@@ -6,9 +6,9 @@
  */
 
 // Server URL Configurations
-const HOST = 'http://localhost:8080';  // NGINX (active)
+// const HOST = 'http://localhost:8080';  // NGINX (active)
 // const HOST = 'http://localhost:3001'; // Locally
-// const HOST = "";                     // VM Deployment
+const HOST = "";                     // VM Deployment
 // const HOST = "";                     // Local IP (Testing Mobile)
 const API_VERSION = "api/v1";
 
